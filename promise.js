@@ -1,7 +1,8 @@
 var promise = function(fn){
   this.status = "pendding"
   var resolves = [],
-      _this = this
+      _this = this,
+      value = ''
 
   this.then = function(call){
     if(this.status !== "pendding")
@@ -15,7 +16,7 @@ var promise = function(fn){
     setTimeout(function() {
       _this.status = "fulfilled"
       resolves.forEach(function(callback) {
-        callback(value)
+        value = callback(value)
       });
     }, 0);
   }
@@ -32,18 +33,10 @@ var _async = new promise(
 )
 _async.then(function(){
   console.log(1)
-}).then(function(){
-  console.log(2)
+  return 3
+}).then(function(res){
+  console.log(res)
 }).then(function(){
   console.log(_async)
 })
 console.log(_async)
-
-// function resolve(){
-
-// }
-// new Promise(
-//   function(resolve, reject){
-//     fs.readfile('../')
-//   }
-// )
