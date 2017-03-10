@@ -1,8 +1,7 @@
 var promise = function(fn){
   this.status = "pendding"
   var resolves = [],
-      _this = this,
-      value = ''
+      _this = this
 
   this.then = function(call){
     if(this.status !== "pendding")
@@ -27,12 +26,12 @@ var promise = function(fn){
 var _async = new promise(
   function(resolve){
     setTimeout(function(){
-      resolve()
+      resolve("dsa")
     }, 1000)
   }
 )
-_async.then(function(){
-  console.log(1)
+_async.then(function(res){
+  console.log(res)
   return 3
 }).then(function(res){
   console.log(res)
