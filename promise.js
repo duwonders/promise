@@ -15,7 +15,7 @@ var promise = function(fn){
     setTimeout(function() {
       _this.status = "fulfilled"
       resolves.forEach(function(callback) {
-        value = callback(value)
+        value = callback(value) 
       });
     }, 0);
   }
