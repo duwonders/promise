@@ -27,7 +27,7 @@ var _async = new promise(
   function(resolve){
     setTimeout(function(){
       resolve("dsa")
-    }, 1000)
+    }, 1000) 
   }
 )
 _async.then(function(res){
