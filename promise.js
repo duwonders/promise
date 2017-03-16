@@ -3,21 +3,25 @@ var promise = function(fn){
   var resolves = [],
       _this = this
 
-  this.then = function(call){
-    if(this.status !== "pendding")
+  _this.then = function(call){
+    if(_this.status !== "pendding")
       call()
     else
       resolves.push(call)
-    return this
+    return _this
   }
 
   function resolve(value){
-    setTimeout(function() {
-      _this.status = "fulfilled"
-      resolves.forEach(function(callback) {
-        value = callback(value) 
-      });
-    }, 0);
+    _this.status = "fulfilled"
+    setTimeout(function(){
+      for(var callback of resolves){
+        if(value instanceof promise){
+          
+          break
+        }
+        value = callback(value)
+      }
+    }, 0)
   }
 
   fn(resolve)
@@ -27,7 +31,7 @@ var _async = new promise(
   function(resolve){
     setTimeout(function(){
       resolve("dsa")
-    }, 1000) 
+    }, 1000)
   }
 )
 _async.then(function(res){
@@ -35,6 +39,15 @@ _async.then(function(res){
   return 3
 }).then(function(res){
   console.log(res)
+  var newPromise = new promise(function(resolve){
+    setTimeout(function(){
+      resolve()
+    }, 1000)
+  })
+  newPromise.then(function(){
+    console.log("inside_then")
+  })
+  return newPromise
 }).then(function(){
   console.log(_async)
 })
