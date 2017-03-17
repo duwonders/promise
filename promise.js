@@ -1,7 +1,10 @@
+
 var promise = function(fn){
   this.status = "pendding"
-  var resolves = [],
+  var resolves = this.resolves,
       _this = this
+  
+  
 
   _this.then = function(call){
     if(_this.status !== "pendding")
@@ -14,12 +17,16 @@ var promise = function(fn){
   function resolve(value){
     _this.status = "fulfilled"
     setTimeout(function(){
+      var counter = 0 //执行下标
       for(var callback of resolves){
         if(value instanceof promise){
-          
+          resolves.splice(0, counter) //删除已执行的前counter项
+          // value.resolves && resolves.unshift(value.resolves)  //将新的promise的任务放入
+          // console.log(resolves)
           break
         }
         value = callback(value)
+        counter++
       }
     }, 0)
   }
@@ -27,6 +34,9 @@ var promise = function(fn){
   fn(resolve)
   
 }
+promise.prototype.resolves = []
+
+
 var _async = new promise(
   function(resolve){
     setTimeout(function(){
@@ -36,7 +46,7 @@ var _async = new promise(
 )
 _async.then(function(res){
   console.log(res)
-  return 3
+  return "hehe"
 }).then(function(res){
   console.log(res)
   var newPromise = new promise(function(resolve){
