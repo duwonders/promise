@@ -14,15 +14,12 @@ var promise = function(fn){
   }
 
   function resolve(value){
-    //console.log(_this.resolves)
-    var resolves = _this.resolves
-    _this.resolves = ownResolves.concat(_this.resolves)
+    promise.prototype.resolves = ownResolves.concat(_this.resolves)
     setTimeout(function(){
       var counter = 0 //执行下标
       for(var callback of _this.resolves){
         if(value instanceof promise){
           _this.resolves.splice(0, counter) //删除已执行的前counter项
-          console.log(_this.resolves === resolves)
           break
         }
         value = callback(value)
