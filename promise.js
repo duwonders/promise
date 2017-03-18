@@ -1,28 +1,28 @@
 
 var promise = function(fn){
   this.status = "pendding"
-  var resolves = this.resolves,
-      _this = this
-  
-  
+  var _this = this,
+      ownResolves = []
 
   _this.then = function(call){
     if(_this.status !== "pendding")
       call()
-    else
-      resolves.push(call)
+    else{
+      ownResolves.push(call)
+    }
     return _this
   }
 
   function resolve(value){
-    _this.status = "fulfilled"
+    //console.log(_this.resolves)
+    var resolves = _this.resolves
+    _this.resolves = ownResolves.concat(_this.resolves)
     setTimeout(function(){
       var counter = 0 //执行下标
-      for(var callback of resolves){
+      for(var callback of _this.resolves){
         if(value instanceof promise){
-          resolves.splice(0, counter) //删除已执行的前counter项
-          // value.resolves && resolves.unshift(value.resolves)  //将新的promise的任务放入
-          // console.log(resolves)
+          _this.resolves.splice(0, counter) //删除已执行的前counter项
+          console.log(_this.resolves === resolves)
           break
         }
         value = callback(value)
